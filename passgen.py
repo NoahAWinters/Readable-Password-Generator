@@ -1,6 +1,7 @@
 # pick random words from text file
 import random
 
+
 spec_chars = ["!", "@", "#", "$", "%", "^", "&", "*",
               "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", ":", ";", "\"", "'", "<", ">", ",", ".", "?", "/", "\\", "|", "`", "~"]
 
@@ -20,6 +21,7 @@ def passGen(passLength):
     if addToFront:
         password = addCharactersToFront(password)
     password = password + getRandomNums()
+
     print(password)
 
 
@@ -88,7 +90,7 @@ def randomCase(word):
 
 
 index = 0
-while index < 500:
+while index < 15:
     passGen(10)
     index += 1
 # open file in read mode
