@@ -18,7 +18,7 @@ consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
               'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
 
 minlength = 2
-maxLength = 6
+# maxLength = 6
 
 
 def validWordCheck(word):
@@ -29,7 +29,7 @@ def validWordCheck(word):
         invalidWord = True
 
     # Check if word is too short or too long
-    if len(word) > maxLength or len(word_str) < minlength:
+    if len(word_str) < minlength:
         invalidWord = True
 
     # Check for Invalid Characters
@@ -91,7 +91,7 @@ with open(f'dict.txt', 'w') as file:
                 for word in list_words:
                     print(word + '\n')
                     word = str(word.encode('utf-8').decode('ascii', 'ignore'))
-                    file.write(word + ',')
+                    file.write(word + '\n')
                 break
 
             page_num += 1
