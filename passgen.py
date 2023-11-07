@@ -1,6 +1,6 @@
 import random
-
-# Main Method
+import string
+# Main Methods
 
 
 def readable_pass_gen(source, word_count, separator="", num_count=0, spec_char_count=0, shuffle=False):
@@ -17,21 +17,37 @@ def readable_pass_gen(source, word_count, separator="", num_count=0, spec_char_c
     return separator.join(new_pass)
 
 
-def unreadable_pass_gen(length=8, use_letters=True, use_numbers=True, use_special_chars=True, random_case=True):
-    characters = ""
+def strong_pass_gen(length=8, percent_letters=.6, use_letters=True, use_numbers=True, use_special_chars=True, random_case=True):
+    # return an empty string if thats what they asked for
+    if (not (use_letters or use_numbers or use_special_chars)) or length == 0:
+        return "What exactly did you expect?"
 
-    if use_letters:
-        characters += generate_random_letter(length, True)
-    if use_numbers:
-        characters += generate_numbers(length)
-    if use_special_chars:
-        characters += generate_special_chars(length)
+    # password should be mostly letters if letters are available
+    password = ""
 
-    password = ''.join(random.choice(characters) for _ in range(length))
+    count_letters = round(length * percent_letters)
+    count_other = round(length - count_letters)
+
+    if (not use_letters) or percent_letters == 0:
+        count_letters = 0
+        count_other = length
+    if (not (use_numbers or use_special_chars)):
+        count_letters = length
+        count_other = 0
+
+    password += generate_random_letter(count_letters, True)
+    other_chars = ""
+    if (use_numbers):
+        other_chars += string.digits
+    if (use_special_chars):
+        other_chars += string.punctuation
+    for i in range(count_other):
+        password += random.choice(other_chars)
+    password = shuffle_string(password)
 
     return password
 
-#########################
+#
 
 
 # Generative
@@ -54,29 +70,25 @@ def generate_numbers(num_count):
     numString = ""
     index = 0
     while index < num_count:
-        numString += str(random.randrange(0, 9))
+        numString += string.digits
         index += 1
     return numString
 
 
 def generate_special_chars(amount):
-    spec_chars = "!@#$%^&*-_+=<>,.?~"
-
     chosen_chars = ""
     index = 0
     while index < amount:
-        chosen_chars += str(random.choice(spec_chars))
+        chosen_chars += random.choice(string.punctuation)
         index += 1
     return chosen_chars
 
 
 def generate_random_letter(amount, random_case):
-    letters = "abcdefghijklmnopqrstuvwxyz"
-
     chosenLetters = ""
     index = 0
     while index < amount:
-        chosenLetters += str(random.choice(letters))
+        chosenLetters += str(random.choice(string.ascii_lowercase))
         index += 1
     if (random_case):
         chosenLetters = RandomCase(chosenLetters)
@@ -112,23 +124,3 @@ def shuffle_string(word):
     random.shuffle(li)
     shuffle_string = ''.join(li)
     return shuffle_string
-
-
-def validate_password(password):
-    if (length > 8):
-        lower_case = False
-        upper_case = False
-        num = False
-        special = False
-        pass
-    else:  # too short
-        return False
-
-
-#############################
-
-words = get_list()
-test = readable_pass_gen(words, 2, "", 3, 1, True)
-print(test)
-test = unreadable_pass_gen(20)
-print(test)
