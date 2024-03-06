@@ -3,7 +3,11 @@ import string
 # Main Methods
 
 
-def readable_pass_gen(source, word_count, separator="", num_count=0, spec_char_count=0, shuffle=False):
+def readable_pass_gen(word_count, shuffle=False, separator=""):
+    source = get_list()
+    num_count = 4
+    spec_char_count = 1
+
     new_pass = get_words_from_list(source, word_count)
     if num_count != 0:
         new_numbers = generate_numbers(num_count)
@@ -14,7 +18,9 @@ def readable_pass_gen(source, word_count, separator="", num_count=0, spec_char_c
     if shuffle:
         random.shuffle(new_pass)
 
-    return separator.join(new_pass)
+    password = separator.join(new_pass)
+
+    return password
 
 
 def strong_pass_gen(length=8, percent_letters=.6, use_letters=True, use_numbers=True, use_special_chars=True, random_case=True):
@@ -70,7 +76,7 @@ def generate_numbers(num_count):
     numString = ""
     index = 0
     while index < num_count:
-        numString += string.digits
+        numString += random.choice(string.digits)
         index += 1
     return numString
 
@@ -124,3 +130,9 @@ def shuffle_string(word):
     random.shuffle(li)
     shuffle_string = ''.join(li)
     return shuffle_string
+
+
+strin = strong_pass_gen(10)
+print(strin)
+strin = readable_pass_gen(1)
+print(strin)
