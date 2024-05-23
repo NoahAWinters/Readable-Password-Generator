@@ -3,50 +3,18 @@ import string
 # Main Methods
 
 
-def readable_pass_gen(word_count, shuffle=False, separator=""):
-    source = get_list()
-    num_count = 4
-    spec_char_count = 1
-
-    new_pass = get_words_from_list(source, word_count)
-    if num_count != 0:
-        new_numbers = generate_numbers(num_count)
-        new_pass.append(new_numbers)
-    if spec_char_count != 0:
-        new_special_chars = generate_special_chars(spec_char_count)
-        new_pass.append(new_special_chars)
-    if shuffle:
-        random.shuffle(new_pass)
-
-    password = separator.join(new_pass)
-
-    return password
-
-
-def strong_pass_gen(length=8, percent_letters=.6, use_letters=True, use_numbers=True, use_special_chars=True, random_case=True):
-    # return an empty string if thats what they asked for
-    if (not (use_letters or use_numbers or use_special_chars)) or length == 0:
-        return "What exactly did you expect?"
-
-    # password should be mostly letters if letters are available
+def strong_pass_gen(length=10, percent_letters=.6, use_special_chars=True, random_case=True):
     password = ""
 
     count_letters = round(length * percent_letters)
     count_other = round(length - count_letters)
 
-    if (not use_letters) or percent_letters == 0:
-        count_letters = 0
-        count_other = length
-    if (not (use_numbers or use_special_chars)):
-        count_letters = length
-        count_other = 0
-
     password += generate_random_letter(count_letters, True)
     other_chars = ""
-    if (use_numbers):
-        other_chars += string.digits
+    other_chars += string.digits
     if (use_special_chars):
         other_chars += string.punctuation
+    password += random.choice(string.digits)
     for i in range(count_other):
         password += random.choice(other_chars)
     password = shuffle_string(password)
@@ -133,6 +101,4 @@ def shuffle_string(word):
 
 
 strin = strong_pass_gen(10)
-print(strin)
-strin = readable_pass_gen(1)
 print(strin)
