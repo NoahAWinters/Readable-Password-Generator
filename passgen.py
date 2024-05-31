@@ -3,7 +3,7 @@ import string
 # Main Methods
 
 
-def strong_pass_gen(length=10, percent_letters=.6, use_special_chars=True, random_case=True):
+def strong_pass_gen(length=10, percent_letters=.4, use_special_chars=True, random_case=True):
     password = ""
 
     count_letters = round(length * percent_letters)
@@ -14,17 +14,23 @@ def strong_pass_gen(length=10, percent_letters=.6, use_special_chars=True, rando
     other_chars += string.digits
     if (use_special_chars):
         other_chars += string.punctuation
-    password += random.choice(string.digits)
-    for i in range(count_other):
-        password += random.choice(other_chars)
+        password += generate_from_list(1, string.punctuation)
+    password += generate_from_list(count_other, other_chars)
     password = shuffle_string(password)
 
     return password
 
-#
 
-
+def read_pass_gen_simple():
+    password = ""
+    lis = get_list()
+    password += get_word_from_list(lis)
+    password += generate_from_list(1, string.punctuation)
+    password += generate_from_list(4, string.digits)
+    return password
 # Generative
+
+
 def get_list():
     with open("dictionary\dict.txt", 'r') as file:
         dict = list(file)
@@ -36,26 +42,22 @@ def get_words_from_list(source, word_count):
     for words in range(0, word_count):
         random_index = random.randint(0, len(source)-1)
         words_list.append(NormalCase(source[random_index].rstrip()))
-        # words_list.append(random.choice(source.read().split(',')))
+        words_list.append(random.choice(source.read().split(',')))
     return words_list
 
 
-def generate_numbers(num_count):
-    numString = ""
-    index = 0
-    while index < num_count:
-        numString += random.choice(string.digits)
-        index += 1
-    return numString
+def get_word_from_list(source):
+    random_index = random.randint(0, len(source)-1)
+    return NormalCase(source[random_index].rstrip())
 
 
-def generate_special_chars(amount):
-    chosen_chars = ""
+def generate_from_list(count, xList):
+    newString = ""
     index = 0
-    while index < amount:
-        chosen_chars += random.choice(string.punctuation)
+    while index < count:
+        newString += random.choice(xList)
         index += 1
-    return chosen_chars
+    return newString
 
 
 def generate_random_letter(amount, random_case):
@@ -100,5 +102,5 @@ def shuffle_string(word):
     return shuffle_string
 
 
-strin = strong_pass_gen(10)
-print(strin)
+# print(strong_pass_gen(30))
+print(read_pass_gen_simple())
