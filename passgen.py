@@ -21,12 +21,14 @@ def strong_pass_gen(length=10, percent_letters=.4, use_special_chars=True, rando
     return password
 
 
-def read_pass_gen_simple():
+def read_pass_gen_simple(min_length=10, numPunc=1, numDigits=4):
     password = ""
     lis = get_list()
     password += get_word_from_list(lis)
-    password += generate_from_list(1, string.punctuation)
-    password += generate_from_list(4, string.digits)
+    while (len(password) < min_length - (numPunc + numDigits)):
+        password += get_word_from_list(lis)
+    password += generate_from_list(numPunc, string.punctuation)
+    password += generate_from_list(numDigits, string.digits)
     return password
 # Generative
 
@@ -103,4 +105,6 @@ def shuffle_string(word):
 
 
 # print(strong_pass_gen(30))
-print(read_pass_gen_simple())
+
+for x in range(20):
+    print(read_pass_gen_simple())
